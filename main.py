@@ -37,17 +37,6 @@ def gridInit(grid):
 
 
 # Returns cell object when given its coordinates
-def findCell(list, coordinates):
-    for cell in list:
-        if cell.getCoordinates() == coordinates:
-            return cell
-
-
-def printCellList(list):
-    for cell in list:
-        cell.printCell()
-
-
 def getCell(list, coordinates):
     for cell in list:
         if cell.getCoordinates() == coordinates:
@@ -73,6 +62,11 @@ def solving(numberGrid, cellList):
                 currentCell = cellList.getCell(cursor)
                 currentCell.setHypothesis(hypothesis)
                 numberGrid[i][j] = currentCell.placeNumber()
+
+
+def printCellList(list):
+    for cell in list:
+        cell.printCell()
 
 
 numberGrid = numpy.zeros((9, 9))
