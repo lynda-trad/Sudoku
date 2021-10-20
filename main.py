@@ -48,20 +48,26 @@ def finished(numberGrid):
     for i in range(len(numberGrid)):
         for j in range(len(numberGrid)):
             if numberGrid[i][j] == 0:
+                print(False)
                 return False
+    print(True)
     return True
 
 
 # Solving algorithm
 def solving(numberGrid, cellList):
+    step = 0
     while not finished(numberGrid):
+        # step != 10
         for i in range(len(numberGrid)):
             for j in range(len(numberGrid)):
                 cursor = (i, j)
                 hypothesis = checking.getHypothesis(numberGrid, cursor)
-                currentCell = cellList.getCell(cursor)
+                currentCell = getCell(cellList, cursor)
                 currentCell.setHypothesis(hypothesis)
                 numberGrid[i][j] = currentCell.placeNumber()
+        print("Step", step, "\n", numberGrid)
+        step += 1
 
 
 def printCellList(list):
@@ -71,4 +77,6 @@ def printCellList(list):
 
 numberGrid = numpy.zeros((9, 9))
 cellList = gridInit(numberGrid)
-printCellList(cellList)
+
+solving(numberGrid, cellList)
+

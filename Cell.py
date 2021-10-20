@@ -28,7 +28,7 @@ class Cell:
         print("Position:", self.getCoordinates())
         print("Number:", self.getNumber())
         print("Hypothesis:", self.getHypothesis())
-        print("Orignial:", self.getOriginal())
+        print("Original:", self.getOriginal())
 
     # Adds number to hypothesis
     def addHypothesis(self, number):
@@ -47,8 +47,11 @@ class Cell:
 
     # Returns number if a number can be placed and places it, 0 if not
     def placeNumber(self):
-        if len(self.getHypothesis()) == 1:
-            self.setNumber(self.hypothesis[0])
-            return self.hypothesis[0]
+        if not self.getOriginal():
+            if len(self.getHypothesis()) == 1:
+                self.setNumber(self.hypothesis[0])
+                return self.hypothesis[0]
+            else:
+                return 0
         else:
-            return 0
+            return self.getNumber()
