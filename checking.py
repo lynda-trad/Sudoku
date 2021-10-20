@@ -2,7 +2,7 @@
 def checkLine(numberGrid, coordinates):
     i = coordinates[0]
     hypothesis = []
-    for number in range(1, 9):
+    for number in range(1, 10):
         boolean = False  # not on line
         for jx in range(len(numberGrid[i])):
             if number == numberGrid[i][jx]:  # found number on line
@@ -18,7 +18,7 @@ def checkLine(numberGrid, coordinates):
 def checkColumn(numberGrid, coordinates):
     j = coordinates[1]
     hypothesis = []
-    for number in range(1, 9):
+    for number in range(1, 10):
         boolean = False  # not on column
         for ix in range(len(numberGrid[j])):
             if number == numberGrid[ix][j]:  # found number on column
@@ -33,20 +33,20 @@ def checkColumn(numberGrid, coordinates):
 # Functions to find neighbours coordinates in the box
 def getIList(i):
     if i % 3 == 0:
-        return [i + 1, i + 2]
+        return [i, i + 1, i + 2]
     elif i % 3 == 1:
-        return [i - 1, i + 1]
+        return [i, i - 1, i + 1]
     elif i % 3 == 2:
-        return [i - 1, i - 2]
+        return [i, i - 1, i - 2]
 
 
 def getJList(j):
     if j % 3 == 0:
-        return [j + 1, j + 2]
+        return [j, j + 1, j + 2]
     elif j % 3 == 1:
-        return [j - 1, j + 1]
+        return [j, j - 1, j + 1]
     elif j % 3 == 2:
-        return [j - 1, j - 2]
+        return [j, j - 1, j - 2]
 
 
 def mergeLists(iList, jList):
@@ -64,43 +64,21 @@ def checkBox(numberGrid, coordinates):
     iList = getIList(i)
     jList = getJList(j)
     checkingList = mergeLists(iList, jList)
+    checkingList.remove((i, j))
+    checkingList.sort()
     hypothesis = []
 
-    for cell in checkingList:
-        ix = cell[0]
-        jx = cell[1]
-        for number in range(1, 9):
-            boolean = False  # not in box
+    for number in range(1, 10):
+        boolean = False  # not in box
+        for cell in checkingList:
+            ix = cell[0]
+            jx = cell[1]
             if number == numberGrid[ix][jx]:  # found number in box
                 boolean = True
-            if not boolean:
-                hypothesis.append(number)
-            elif boolean and number in hypothesis:  # if number was placed after hypothesis init
-                hypothesis.remove(number)
-    return hypothesis
-
-    ################
-
-    # if i % 3 == 0 -> check i + 1 et i + 2     iList = [i + 1, i + 2]
-    # if j % 3 == 0 -> check j + 1 et j + 2     jList = [j + 1, j + 2]
-
-    # if i % 3 == 1 -> check i - 1 et i + 1     iList = [i - 1, i + 1]
-    # if j % 3 == 1 -> check j - 1 et j + 1     jList = [j - 1, j + 1]
-
-    # if i % 3 == 2 -> check i - 1 et i - 2     iList = [i - 1, i - 2]
-    # if j % 3 == 2 -> check j - 1 et j - 2     jList = [j - 1, j - 2]
-
-    # exemple : i % 3 == 1 et j % 3 == 2
-    # needs to check :
-    # checkingList = []
-    # iList = [i - 1, i + 1]
-    # jList = [j - 1, j - 2]
-    # combinaison of the two :
-    # for i in iList:
-    #      for j in jList:
-    #           checkingList.append((i,j))
-    # then we check if number is in checkingList
-
+        if not boolean and number not in hypothesis:
+            hypothesis.append(number)
+        elif boolean and number in hypothesis:  # if number was placed after hypothesis init
+            hypothesis.remove(number)
     return hypothesis
 
 
@@ -113,5 +91,5 @@ def getHypothesis(numberGrid, cursor):
     for hypo in lineHypo:
         if hypo in columnHypo and hypo in boxHypo:
             hypothesis.append(hypo)
-    print("coordinates", cursor, "hypothesis are: ", hypothesis)
+    #print("coordinates", cursor, "hypothesis are: ", hypothesis)
     return hypothesis

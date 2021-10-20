@@ -7,7 +7,7 @@ import checking
 
 
 def openFile():
-    filename = 'sudoku.txt'
+    filename = 'sudokutest.txt'
     # input("Please enter a filename with txt extension from folder /ressources.\n")
     while not exists("./ressources/" + filename):
         filename = input("Please enter a valid filename.\n")
@@ -48,9 +48,7 @@ def finished(numberGrid):
     for i in range(len(numberGrid)):
         for j in range(len(numberGrid)):
             if numberGrid[i][j] == 0:
-                print(False)
                 return False
-    print(True)
     return True
 
 
@@ -79,4 +77,11 @@ numberGrid = numpy.zeros((9, 9))
 cellList = gridInit(numberGrid)
 
 solving(numberGrid, cellList)
-
+tab = numpy.zeros((3, 3), dtype=int)
+tab[0][0] = 9
+tab[0][1] = 6
+tab[1][1] = 4
+tab[1][2] = 8
+tab[2][2] = 5
+# print(tab)
+# print("test on small box", checking.checkBox(tab, (1, 0)))
