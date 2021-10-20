@@ -4,6 +4,9 @@ import Cell
 
 
 # Opens input file
+import checking
+
+
 def openFile():
     filename = 'sudoku.txt'
     # input("Please enter a filename with txt extension from folder /ressources.\n")
@@ -48,6 +51,11 @@ def printCellList(list):
 
 def solving(numberGrid, cellList):
     cursor = (0, 0)
+    for i in range(len(numberGrid)):
+        for j in range(len(numberGrid)):
+            hypothesis = checking.getHypothesis(numberGrid, cursor)
+
+
     # with cursor, move in numberGrid, for each cell, if number == 0:
     # for every number from 1 to 9 check if you can place it:
     # check line of the coordinates, check column, check box too
