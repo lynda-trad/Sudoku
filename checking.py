@@ -5,7 +5,7 @@ def checkLine(numberGrid, coordinates):
     for number in range(1, 10):
         boolean = False  # not on line
         for jx in range(len(numberGrid[i])):
-            if number == numberGrid[i][jx]:  # found number on line
+            if number == numberGrid[i][jx]:     # found number on line
                 boolean = True
         if not boolean:
             hypothesis.append(number)
@@ -21,7 +21,7 @@ def checkColumn(numberGrid, coordinates):
     for number in range(1, 10):
         boolean = False  # not on column
         for ix in range(len(numberGrid[j])):
-            if number == numberGrid[ix][j]:  # found number on column
+            if number == numberGrid[ix][j]:     # found number on column
                 boolean = True
         if not boolean:
             hypothesis.append(number)
@@ -73,7 +73,7 @@ def checkBox(numberGrid, coordinates):
         for cell in checkingList:
             ix = cell[0]
             jx = cell[1]
-            if number == numberGrid[ix][jx]:  # found number in box
+            if number == numberGrid[ix][jx]:    # found number in box
                 boolean = True
         if not boolean and number not in hypothesis:
             hypothesis.append(number)
@@ -91,5 +91,4 @@ def getHypothesis(numberGrid, cursor):
     for hypo in lineHypo:
         if hypo in columnHypo and hypo in boxHypo:
             hypothesis.append(hypo)
-    #print("coordinates", cursor, "hypothesis are: ", hypothesis)
     return hypothesis

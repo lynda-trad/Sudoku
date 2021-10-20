@@ -7,8 +7,7 @@ import checking
 
 
 def openFile():
-    filename = 'sudoku.txt'
-    # input("Please enter a filename with txt extension from folder /ressources.\n")
+    filename = input("Please enter a filename with txt extension from folder /ressources.\n")
     while not exists("./ressources/" + filename):
         filename = input("Please enter a valid filename.\n")
     file = open("./ressources/" + filename, "r")
@@ -56,7 +55,6 @@ def finished(numberGrid):
 def solving(numberGrid, cellList):
     step = 0
     while not finished(numberGrid):
-        # step != 10
         for i in range(len(numberGrid)):
             for j in range(len(numberGrid)):
                 cursor = (i, j)
@@ -65,7 +63,8 @@ def solving(numberGrid, cellList):
                     currentCell = getCell(cellList, cursor)
                     currentCell.setHypothesis(hypothesis)
                     numberGrid[i][j] = currentCell.placeNumber()
-        print("Step", step, "\n", numberGrid)
+        print("Step", step, "\n")
+        printGrid(numberGrid, cellList)
         step += 1
 
 
@@ -74,15 +73,23 @@ def printCellList(list):
         cell.printCell()
 
 
+class colors:
+    GREEN = "\033[0;32m"
+
+
+def printGrid(grid, cellList):
+    for i in range(len(grid)):
+        for j in range(len(grid)):
+            cell = getCell(cellList, (i, j))
+            if cell.getOriginal():
+                print(colors.GREEN + "|", grid[i][j], "|")
+            else:
+                print("|", grid[i][j], "|")
+    print()
+
+
 numberGrid = numpy.zeros((9, 9))
 cellList = gridInit(numberGrid)
 
 solving(numberGrid, cellList)
 tab = numpy.zeros((3, 3), dtype=int)
-tab[0][0] = 9
-tab[0][1] = 6
-tab[1][1] = 4
-tab[1][2] = 8
-tab[2][2] = 5
-# print(tab)
-# print("test on small box", checking.checkBox(tab, (1, 0)))
