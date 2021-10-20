@@ -14,13 +14,21 @@ class Cell:
     def getCoordinates(self):
         return self.coordinates
 
+    def getOriginal(self):
+        return self.original
+
     def setNumber(self, number):
         self.number = number
 
+    def setHypothesis(self, hypo):
+        self.hypothesis = hypo
+
+    # Printing method
     def printCell(self):
         print("Position:", self.getCoordinates())
         print("Number:", self.getNumber())
         print("Hypothesis:", self.getHypothesis())
+        print("Orignial:", self.getOriginal())
 
     # Adds number to hypothesis
     def addHypothesis(self, number):
@@ -36,9 +44,6 @@ class Cell:
             return True
         else:
             return False
-
-    def setHypothesis(self, hypo):
-        self.hypothesis = hypo
 
     # Returns number if a number can be placed and places it, 0 if not
     def placeNumber(self):

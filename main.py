@@ -22,7 +22,7 @@ def gridInit(grid):
     for i in range(len(lines)):  # for each line = i
         for j in range(len(lines[i])):  # for each column in line = j
             if lines[i][j] == '_':
-                c = Cell.Cell(i, j, 0, True)
+                c = Cell.Cell(i, j, 0, False)
             elif lines[i][j].isdigit():
                 c = Cell.Cell(i, j, int(lines[i][j]), True)
             elif lines[i][j] != '\n':

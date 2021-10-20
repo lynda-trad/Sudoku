@@ -9,10 +9,12 @@ def checkLine(numberGrid, coordinates):
         print(number)
         while not boolean:  # while number is not found on line, we keep looking
             for jx in len(range(numberGrid[i])):
-                if number == numberGrid[i][jx]:  # found number on line
+                if number == numberGrid[i][jx]:     # found number on line
                     boolean = True
             if not boolean:
                 hypothesis.append(number)
+            elif boolean and number in hypothesis:  # if number was placed after hypothesis init
+                hypothesis.remove(number)
     return hypothesis
 
 
@@ -31,6 +33,8 @@ def checkColumn(numberGrid, coordinates):
                     boolean = True
             if not boolean:
                 hypothesis.append(number)
+            elif boolean and number in hypothesis:  # if number was placed after hypothesis init
+                hypothesis.remove(number)
     return hypothesis
 
 
