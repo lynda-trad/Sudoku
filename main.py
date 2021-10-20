@@ -6,6 +6,13 @@ import Cell
 import checking
 
 
+class colors:
+    GREEN = '\033[0;32m'
+    BLUE = '\033[34m'
+    BLACK = '\033[33m'
+    RED = '\033[31m'
+
+
 def openFile():
     filename = input("Please enter a filename with txt extension from folder /ressources.\n")
     while not exists("./ressources/" + filename):
@@ -26,12 +33,10 @@ def gridInit(grid):
                 c = Cell.Cell(i, j, int(lines[i][j]), True)
             elif lines[i][j] != '\n':
                 print("ERROR, cell has to be either _ or a digit, please check the file again")
-                return
+                return 0
             if i != 9 and j != 9:
                 cellList.append(c)
                 grid[i, j] = c.getNumber()
-    c.printCell()
-    print(grid)
     return cellList
 
 
@@ -54,6 +59,7 @@ def finished(numberGrid):
 # Solving algorithm
 def solving(numberGrid, cellList):
     step = 0
+    printGrid(numberGrid, cellList, step)
     while not finished(numberGrid):
         for i in range(len(numberGrid)):
             for j in range(len(numberGrid)):
@@ -63,9 +69,9 @@ def solving(numberGrid, cellList):
                     currentCell = getCell(cellList, cursor)
                     currentCell.setHypothesis(hypothesis)
                     numberGrid[i][j] = currentCell.placeNumber()
-        print("Step", step, "\n")
-        printGrid(numberGrid, cellList)
         step += 1
+        printGrid(numberGrid, cellList, step)
+
 
 
 def printCellList(list):
@@ -73,23 +79,26 @@ def printCellList(list):
         cell.printCell()
 
 
-class colors:
-    GREEN = "\033[0;32m"
-
-
-def printGrid(grid, cellList):
+def printGrid(grid, cellList, step):
+    txt = ""
+    print(colors.BLACK + "Step", step, "\n")
     for i in range(len(grid)):
         for j in range(len(grid)):
             cell = getCell(cellList, (i, j))
             if cell.getOriginal():
-                print(colors.GREEN + "|", grid[i][j], "|")
+                txt += colors.GREEN + "|" + str(int(grid[i][j])) + "|"
+            elif grid[i][j] == 0:
+                txt += colors.RED + "|" + str(int(grid[i][j])) + "|"
             else:
-                print("|", grid[i][j], "|")
-    print()
+                txt += colors.BLUE + "|" + str(int(grid[i][j])) + "|"
+        txt += '\n'
+    print(txt)
 
 
 numberGrid = numpy.zeros((9, 9))
 cellList = gridInit(numberGrid)
-
-solving(numberGrid, cellList)
-tab = numpy.zeros((3, 3), dtype=int)
+if cellList == 0:
+    print("Parsing failed, script will now stop")
+else:
+    solving(numberGrid, cellList)
+    tab = numpy.zeros((3, 3), dtype=int)
