@@ -7,7 +7,7 @@ import checking
 
 
 def openFile():
-    filename = 'sudokutest.txt'
+    filename = 'sudoku.txt'
     # input("Please enter a filename with txt extension from folder /ressources.\n")
     while not exists("./ressources/" + filename):
         filename = input("Please enter a valid filename.\n")
@@ -60,10 +60,11 @@ def solving(numberGrid, cellList):
         for i in range(len(numberGrid)):
             for j in range(len(numberGrid)):
                 cursor = (i, j)
-                hypothesis = checking.getHypothesis(numberGrid, cursor)
-                currentCell = getCell(cellList, cursor)
-                currentCell.setHypothesis(hypothesis)
-                numberGrid[i][j] = currentCell.placeNumber()
+                if numberGrid[i][j] == 0:
+                    hypothesis = checking.getHypothesis(numberGrid, cursor)
+                    currentCell = getCell(cellList, cursor)
+                    currentCell.setHypothesis(hypothesis)
+                    numberGrid[i][j] = currentCell.placeNumber()
         print("Step", step, "\n", numberGrid)
         step += 1
 
