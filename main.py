@@ -2,7 +2,6 @@ import numpy
 from os.path import exists
 import Cell
 
-
 # Opens input file
 import checking
 
@@ -49,20 +48,31 @@ def printCellList(list):
         cell.printCell()
 
 
-def solving(numberGrid, cellList):
-    cursor = (0, 0)
+def getCell(list, coordinates):
+    for cell in list:
+        if cell.getCoordinates() == coordinates:
+            return cell
+
+
+# While cell has 0 as number, game is not finished
+def finished(numberGrid):
     for i in range(len(numberGrid)):
         for j in range(len(numberGrid)):
-            hypothesis = checking.getHypothesis(numberGrid, cursor)
+            if numberGrid[i][j] == 0:
+                return False
+    return True
 
 
-    # with cursor, move in numberGrid, for each cell, if number == 0:
-    # for every number from 1 to 9 check if you can place it:
-    # check line of the coordinates, check column, check box too
-    # if so, put said number in hypothesis of cell with coordinates
-    # once every number from 1 to 9 was tested, if hypothesis.len == 1, place the number in numberGrid and Cell.number
-    # else move forward to the next cell with double for loop in numberGrid
-    # once you are done with the whole numberGrid, reset cursor to 0,0 and start again until every cell is filled
+# Solving algorithm
+def solving(numberGrid, cellList):
+    while not finished(numberGrid):
+        for i in range(len(numberGrid)):
+            for j in range(len(numberGrid)):
+                cursor = (i, j)
+                hypothesis = checking.getHypothesis(numberGrid, cursor)
+                currentCell = cellList.getCell(cursor)
+                currentCell.setHypothesis(hypothesis)
+                numberGrid[i][j] = currentCell.placeNumber()
 
 
 numberGrid = numpy.zeros((9, 9))

@@ -42,6 +42,8 @@ def checkBox(numberGrid, coordinates):
     boolean = False  # not in box
     hypothesis = []
 
+    # TO DO
+
     return hypothesis
 
 
