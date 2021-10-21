@@ -14,10 +14,10 @@ class colors:
 
 
 def openFile():
-    filename = input("Please enter a filename with txt extension from folder /ressources.\n")
-    while not exists("./ressources/" + filename):
+    filename = input("Please enter a filename with txt extension from folder /resources.\n")
+    while not exists("./resources/" + filename):
         filename = input("Please enter a valid filename.\n")
-    file = open("./ressources/" + filename, "r")
+    file = open("./resources/" + filename, "r")
     return file.readlines()
 
 
@@ -40,6 +40,7 @@ class Grid:
     def getColumnList(self):
         return self.columnList
 
+    # Initialisation methods
     def initNumberGrid(self):
         self.numberGrid = numpy.zeros((9, 9), dtype=int)
 
@@ -47,7 +48,6 @@ class Grid:
         self.cellList = cellList
 
     # Parsing file to fill grid with what we know
-
     def gridInit(self):
         grid = self.getNumberGrid()
         lines = openFile()

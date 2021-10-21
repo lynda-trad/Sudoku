@@ -1,0 +1,12 @@
+--- Sudoku Project ---
+Place a txt file in folder /resources following example 'sudoku.txt' :
+
+- Each blank space in the grid has to be a '_'
+in your textfile, without any space between numbers
+- Jump to the next line with the enter key
+and finish initializing the grid like so.
+
+Once you launch the program, enter your file name
+and watch your computer unsolve the puzzle!
+
+--- ENJOY ! ---

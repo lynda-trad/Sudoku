@@ -1,6 +1,4 @@
 import time
-import numpy
-import Cell
 import Grid
 import checking
 
@@ -34,6 +32,7 @@ def solving(grid, cellList):
         grid.printGrid(step)
 
 
+##################################################
 grid = Grid.Grid()
 grid.initNumberGrid()
 grid.initCellList(grid.gridInit())
