@@ -1,5 +1,4 @@
 # Returns number possibilities of given cell depending of line
-import time
 
 
 def checkLine(numberGrid, coordinates):
@@ -8,7 +7,7 @@ def checkLine(numberGrid, coordinates):
     for number in range(1, 10):
         boolean = False  # not on line
         for jx in range(len(numberGrid[i])):
-            if number == numberGrid[i][jx]:     # found number on line
+            if number == numberGrid[i][jx]:  # found number on line
                 boolean = True
         if not boolean:
             hypothesis.append(number)
@@ -24,7 +23,7 @@ def checkColumn(numberGrid, coordinates):
     for number in range(1, 10):
         boolean = False  # not on column
         for ix in range(len(numberGrid[j])):
-            if number == numberGrid[ix][j]:     # found number on column
+            if number == numberGrid[ix][j]:  # found number on column
                 boolean = True
         if not boolean:
             hypothesis.append(number)
@@ -76,7 +75,7 @@ def checkBox(numberGrid, coordinates):
         for cell in checkingList:
             ix = cell[0]
             jx = cell[1]
-            if number == numberGrid[ix][jx]:    # found number in box
+            if number == numberGrid[ix][jx]:  # found number in box
                 boolean = True
         if not boolean and number not in hypothesis:
             hypothesis.append(number)
@@ -90,11 +89,45 @@ def getHypothesis(numberGrid, cursor):
     lineHypo = checkLine(numberGrid, cursor)
     columnHypo = checkColumn(numberGrid, cursor)
     boxHypo = checkBox(numberGrid, cursor)
-    print("lineHypo:", lineHypo)
-    print("columnHypo:", columnHypo)
-    print("boxhypo", boxHypo)
     hypothesis = []
     for hypo in lineHypo:
         if hypo in columnHypo and hypo in boxHypo:
             hypothesis.append(hypo)
     return hypothesis
+
+
+def updateBox(numberGrid, grid, i, j):
+    # box members
+    members = [(i, j), (i + 1, j), (i + 2, j),
+               (i, j + 1), (i + 1, j + 1), (i + 2, j + 1),
+               (i, j + 2), (i + 2, j + 2), (i + 2, j + 2)
+               ]
+
+    # on check hypothesis de chaque cell on garde en memoire index de cell qui ont hypothesis = 2
+    cellMemberList = []
+    for member in members:
+        if numberGrid[member[0]][member[1]] != 0:
+            cellMemberList.append(grid.getCell(members))  # on ajoute le membre de la boite qui a number = 0
+
+    # on recupere tt les cellules qui ont 2 numbers en hypothese
+    hypothesisTuple = {}
+    for cell in cellMemberList:
+        if len(cell.getHypothesis()) == 2:  # cell.getCoordinates() == value ; # hypothesis[] == key
+            hypothesisTuple[cell.getCoordinates()] = str(cell.getHypothesis())
+
+    duplicate = {}
+    for key, value in hypothesisTuple.items():
+        duplicate.setdefault(value, set()).add(key)
+    result = filter(lambda x: len(x) > 1, duplicate.values())
+    resList = list(result)
+    print(resList)
+    print(len(resList))
+    print(resList[0])
+    print(resList[0][0])
+    print(resList[0][1])
+
+    print(resList[1])
+
+    # result == list des coordonnees des 2 cells qui ont hypotheses en commun
+    if len(list(result)) == 2:
+        return

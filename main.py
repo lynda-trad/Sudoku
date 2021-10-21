@@ -29,6 +29,7 @@ def solving(grid, cellList):
                     numberGrid[i][j] = currentCell.placeNumber()
                     print(Grid.colors.YELLOW + "final hypothesis:", currentCell.getHypothesis())
         step += 1
+        #time.sleep(2)
         grid.printGrid(step)
 
 
@@ -40,3 +41,4 @@ if grid.getCellList() == 0:
     print("Parsing failed, script will now stop")
 else:
     solving(grid, grid.getCellList())
+    print()

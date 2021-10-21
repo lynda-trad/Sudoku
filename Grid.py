@@ -2,6 +2,8 @@ import numpy
 from os.path import exists
 
 import Cell
+import Column
+import Line
 
 
 class colors:
@@ -41,6 +43,17 @@ class Grid:
         return self.columnList
 
     # Initialisation methods
+
+    def initLineList(self):
+        for i in range(len(self.getNumberGrid())):
+            line = Line.Line(i)
+            self.lineList.append(line)
+
+    def initColumnList(self):
+        for j in range(len(self.getNumberGrid())):
+            column = Column.Column(j)
+            self.columnList.append(column)
+
     def initNumberGrid(self):
         self.numberGrid = numpy.zeros((9, 9), dtype=int)
 
@@ -52,8 +65,8 @@ class Grid:
         grid = self.getNumberGrid()
         lines = openFile()
         cellList = []
-        for i in range(len(lines)):  # for each line = i
-            for j in range(len(lines[i])):  # for each column in line = j
+        for i in range(len(lines)):
+            for j in range(len(lines[i])):
                 if lines[i][j] == '_':
                     c = Cell.Cell(i, j, 0, False)
                 elif lines[i][j].isdigit():
@@ -64,6 +77,8 @@ class Grid:
                 if i != 9 and j != 9:
                     cellList.append(c)
                     grid[i, j] = c.getNumber()
+        self.initLineList()
+        self.initColumnList()
         return cellList
 
     # Returns cell object when given its coordinates
