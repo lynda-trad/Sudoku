@@ -1,4 +1,7 @@
 # Returns number possibilities of given cell depending of line
+import time
+
+
 def checkLine(numberGrid, coordinates):
     i = coordinates[0]
     hypothesis = []
@@ -67,7 +70,7 @@ def checkBox(numberGrid, coordinates):
     checkingList.remove((i, j))
     checkingList.sort()
     hypothesis = []
-
+    print("checkbox, comparing to", checkingList)
     for number in range(1, 10):
         boolean = False  # not in box
         for cell in checkingList:
@@ -87,6 +90,9 @@ def getHypothesis(numberGrid, cursor):
     lineHypo = checkLine(numberGrid, cursor)
     columnHypo = checkColumn(numberGrid, cursor)
     boxHypo = checkBox(numberGrid, cursor)
+    print("lineHypo:", lineHypo)
+    print("columnHypo:", columnHypo)
+    print("boxhypo", boxHypo)
     hypothesis = []
     for hypo in lineHypo:
         if hypo in columnHypo and hypo in boxHypo:

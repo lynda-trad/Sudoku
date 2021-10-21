@@ -1,8 +1,8 @@
-import numpy
+import time
 from os.path import exists
+import numpy
 import Cell
-
-# Opens input file
+import Grid
 import checking
 
 
@@ -65,13 +65,14 @@ def solving(numberGrid, cellList):
             for j in range(len(numberGrid)):
                 cursor = (i, j)
                 if numberGrid[i][j] == 0:
+                    print("Working on: (", i, ",", j, ")")
                     hypothesis = checking.getHypothesis(numberGrid, cursor)
                     currentCell = getCell(cellList, cursor)
                     currentCell.setHypothesis(hypothesis)
                     numberGrid[i][j] = currentCell.placeNumber()
+                    print("final hypothesis:", currentCell.getHypothesis())
         step += 1
         printGrid(numberGrid, cellList, step)
-
 
 
 def printCellList(list):
@@ -95,10 +96,10 @@ def printGrid(grid, cellList, step):
     print(txt)
 
 
-numberGrid = numpy.zeros((9, 9))
-cellList = gridInit(numberGrid)
-if cellList == 0:
+grid = Grid.Grid()
+grid.initNumberGrid()
+grid.initCellList(gridInit(grid.getNumberGrid()))
+if grid.getCellList() == 0:
     print("Parsing failed, script will now stop")
 else:
-    solving(numberGrid, cellList)
-    tab = numpy.zeros((3, 3), dtype=int)
+    solving(grid.getNumberGrid(), grid.getCellList())
