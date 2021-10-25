@@ -30,33 +30,12 @@ def solving(grid, cellList):
                     checking.updateHypothesis(grid, numberGrid[i][j], i, j)
                     # print(Grid.colors.YELLOW + "final hypothesis:", currentCell.getHypothesis())
 
-        updateBoxes(numberGrid, grid)
-        updateLines(numberGrid, grid)
-        updateColumns(numberGrid, grid)
+        checking.updateAll(numberGrid, grid)
+        grid.printGrid(step)
+        checking.updateTuples(numberGrid, grid)
+
         step += 1
         grid.printGrid(step)
-
-
-def updateBoxes(numberGrid, grid):
-    checking.boxSolo(numberGrid, grid, 0, 0)
-    checking.boxSolo(numberGrid, grid, 0, 3)
-    checking.boxSolo(numberGrid, grid, 0, 6)
-    checking.boxSolo(numberGrid, grid, 3, 0)
-    checking.boxSolo(numberGrid, grid, 3, 3)
-    checking.boxSolo(numberGrid, grid, 3, 6)
-    checking.boxSolo(numberGrid, grid, 6, 0)
-    checking.boxSolo(numberGrid, grid, 6, 3)
-    checking.boxSolo(numberGrid, grid, 6, 6)
-
-
-def updateLines(numberGrid, grid):
-    for i in range(9):
-        checking.lineSolo(numberGrid, grid, i)
-
-
-def updateColumns(numberGrid, grid):
-    for j in range(9):
-        checking.columnSolo(numberGrid, grid, j)
 
 
 ##################################################
@@ -68,3 +47,4 @@ if grid.getCellList() == 0:
 else:
     solving(grid, grid.getCellList())
     print()
+

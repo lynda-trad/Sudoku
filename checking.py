@@ -1,7 +1,3 @@
-# Returns number possibilities of given cell depending of line
-import time
-
-
 # Return lists of coordinates on lines, columns or boxes
 def boxMembers(i, j):
     return [(i, j), (i + 1, j), (i + 2, j),
@@ -144,30 +140,7 @@ def updateHypothesis(grid, number, i, j):
         cell.delHypothesis(number)
 
 
-def boxSolo(numberGrid, grid, i, j):
-    members = boxMembers(i, j)
-
-    cellMemberList = []
-    for member in members:
-        if numberGrid[member[0]][member[1]] == 0:
-            cellMemberList.append(grid.getCell(member))
-
-    if len(cellMemberList) != 0:
-        for number in range(1, 10):
-            count = 0
-            for cell in cellMemberList:
-                if len(cell.getHypothesis()) != 0:
-                    if number in cell.getHypothesis():
-                        count += 1
-            if count == 1:
-                for cell in cellMemberList:
-                    if number in cell.getHypothesis():
-                        cell.setNumber(number)
-                        coord = cell.getCoordinates()
-                        numberGrid[coord[0]][coord[1]] = number
-                        updateHypothesis(grid, numberGrid[coord[0]][coord[1]], coord[0], coord[1])
-
-
+"""
 def lineSolo(numberGrid, grid, i):
     members = lineMembers(i)
     cellMemberList = []
@@ -215,35 +188,114 @@ def columnSolo(numberGrid, grid, j):
                         numberGrid[coord[0]][coord[1]] = number
                         updateHypothesis(grid, numberGrid[coord[0]][coord[1]], coord[0], coord[1])
 
+"""
+
+
+# Calls updateBoxes, Lines, Columns
+def updateAll(numberGrid, grid):
+    updateBoxes(numberGrid, grid)
+    updateLines(numberGrid, grid)
+    updateColumns(numberGrid, grid)
+
+
+def updateBoxes(numberGrid, grid):
+    checkSolo(boxMembers(0, 0), numberGrid, grid)
+    checkSolo(boxMembers(0, 3), numberGrid, grid)
+    checkSolo(boxMembers(0, 6), numberGrid, grid)
+    checkSolo(boxMembers(3, 0), numberGrid, grid)
+    checkSolo(boxMembers(3, 3), numberGrid, grid)
+    checkSolo(boxMembers(3, 6), numberGrid, grid)
+    checkSolo(boxMembers(6, 0), numberGrid, grid)
+    checkSolo(boxMembers(6, 3), numberGrid, grid)
+    checkSolo(boxMembers(6, 6), numberGrid, grid)
+
+
+def updateLines(numberGrid, grid):
+    for i in range(9):
+        checkSolo(lineMembers(i), numberGrid, grid)
+
+
+def updateColumns(numberGrid, grid):
+    for j in range(9):
+        checkSolo(columnMembers(j), numberGrid, grid)
+
+
+# If a number is only possible in one cell depending on its box, line or column then we place it
+def checkSolo(memberList, numberGrid, grid):
+    cellMemberList = []
+    for member in memberList:
+        if numberGrid[member[0]][member[1]] == 0:
+            cellMemberList.append(grid.getCell(member))
+
+    if len(cellMemberList) != 0:
+        for number in range(1, 10):
+            count = 0
+            for cell in cellMemberList:
+                if len(cell.getHypothesis()) != 0:
+                    if number in cell.getHypothesis():
+                        count += 1
+            if count == 1:
+                for cell in cellMemberList:
+                    if number in cell.getHypothesis():
+                        cell.setNumber(number)
+                        coord = cell.getCoordinates()
+                        numberGrid[coord[0]][coord[1]] = number
+                        updateHypothesis(grid, numberGrid[coord[0]][coord[1]], coord[0], coord[1])
+
 
 ##############################################################
-def boxTuple(numberGrid, grid, i, j):
-    members = boxMembers(i, j)
-    cellMemberList = []
-    for member in members:
-        if numberGrid[member[0]][member[1]] != 0:
-            cellMemberList.append(grid.getCell(members))
+# Calls updateBoxTuple, LineTuple and ColumnTuple
+def updateTuples(numberGrid, grid):
+    updateBoxTuple(numberGrid, grid)
+    updateLineTuple(numberGrid, grid)
+    updateColumnTuple(numberGrid, grid)
 
-    # on recupere tt les cellules qui ont 2 numbers en hypothese
-    hypothesisTuple = {}
-    for cell in cellMemberList:
-        if len(cell.getHypothesis()) == 2:  # cell.getCoordinates() == value ; # hypothesis[] == key
-            hypothesisTuple[cell.getCoordinates()] = str(cell.getHypothesis())
 
-    duplicate = {}
-    for key, value in hypothesisTuple.items():
-        duplicate.setdefault(value, set()).add(key)
-    result = filter(lambda x: len(x) > 1, duplicate.values())
-    resList = list(result)
-    print(resList)
-    print(len(resList))
-    print(resList[0])
-    print(resList[0][0])
-    print(resList[0][1])
+def updateBoxTuple(numberGrid, grid):
+    checkTuple(boxMembers(6, 3), numberGrid, grid)
+    checkTuple(boxMembers(6, 3), numberGrid, grid)
+    checkTuple(boxMembers(6, 3), numberGrid, grid)
+    checkTuple(boxMembers(6, 3), numberGrid, grid)
+    checkTuple(boxMembers(6, 3), numberGrid, grid)
+    checkTuple(boxMembers(6, 3), numberGrid, grid)
+    checkTuple(boxMembers(6, 3), numberGrid, grid)
+    checkTuple(boxMembers(6, 3), numberGrid, grid)
+    checkTuple(boxMembers(6, 6), numberGrid, grid)
 
-    print(resList[1])
 
-    # result == list des coordonnees des 2 cells qui ont hypotheses en commun
-    if len(list(result)) == 2:
+def updateLineTuple(numberGrid, grid):
+    for i in range(9):
+        checkTuple(lineMembers(i), numberGrid, grid)
+
+
+def updateColumnTuple(numberGrid, grid):
+    for j in range(9):
+        checkTuple(columnMembers(j), numberGrid, grid)
+
+
+# If 2 cells in a line, column or box have the same numbers as hypothesis then we remove them from the other hypothesis
+def checkTuple(memberList, numberGrid, grid):
+    indexList = []
+    for member in memberList:
+        if numberGrid[member[0]][member[1]] == 0:
+            cell = grid.getCell(member)
+            if len(cell.getHypothesis()) == 2:
+                indexList.append(member)
+    if len(indexList) == 0:
         return
 
+    # get cells with only 2 numbers as hypothesis
+    if len(indexList) == 2:
+        # 2 cells have hypothesis = 2
+        cellx1 = grid.getCell(indexList[0])
+        cellx2 = grid.getCell(indexList[1])
+
+        if cellx1.getHypothesis() == cellx2.getHypothesis():  # if they have the same hypothesis
+            hypothesisTuple = cellx1.getHypothesis()
+            for member in memberList:
+                if member not in indexList:
+                    cell = grid.getCell(member)
+                    if hypothesisTuple[0] in cell.getHypothesis():
+                        cell.delHypothesis(hypothesisTuple[0])
+                    if hypothesisTuple[1] in cell.getHypothesis():
+                        cell.delHypothesis(hypothesisTuple[1])
