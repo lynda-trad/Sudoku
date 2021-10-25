@@ -13,7 +13,7 @@ def finished(numberGrid):
 
 
 # Solving algorithm
-def solving(grid, cellList):
+def solving(grid):
     step = 0
     numberGrid = grid.getNumberGrid()
     grid.printGrid(step)
@@ -29,11 +29,9 @@ def solving(grid, cellList):
                     numberGrid[i][j] = currentCell.placeNumber()
                     checking.updateHypothesis(grid, numberGrid[i][j], i, j)
                     # print(Grid.colors.YELLOW + "final hypothesis:", currentCell.getHypothesis())
-
         checking.updateAll(numberGrid, grid)
         grid.printGrid(step)
         checking.updateTuples(numberGrid, grid)
-
         step += 1
         grid.printGrid(step)
 
@@ -45,6 +43,4 @@ grid.initCellList(grid.gridInit())
 if grid.getCellList() == 0:
     print("Parsing failed, script will now stop")
 else:
-    solving(grid, grid.getCellList())
-    print()
-
+    solving(grid)

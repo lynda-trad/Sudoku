@@ -1,4 +1,7 @@
 # Return lists of coordinates on lines, columns or boxes
+import time
+
+
 def boxMembers(i, j):
     return [(i, j), (i + 1, j), (i + 2, j),
             (i, j + 1), (i + 1, j + 1), (i + 2, j + 1),
@@ -52,7 +55,7 @@ def checkColumn(numberGrid, coordinates):
     return hypothesis
 
 
-# Functions to find neighbours coordinates in the box
+# Functions for checkBox
 def getIList(i):
     if i % 3 == 0:
         return [i, i + 1, i + 2]
@@ -140,57 +143,6 @@ def updateHypothesis(grid, number, i, j):
         cell.delHypothesis(number)
 
 
-"""
-def lineSolo(numberGrid, grid, i):
-    members = lineMembers(i)
-    cellMemberList = []
-    for member in members:
-        if numberGrid[member[0]][member[1]] == 0:
-            cellMemberList.append(grid.getCell(member))
-
-    if len(cellMemberList) != 0:
-        for number in range(1, 10):
-            count = 0
-            for cell in cellMemberList:
-                if len(cell.getHypothesis()) != 0:
-                    if number in cell.getHypothesis():
-                        count += 1
-            if count == 1:
-                for cell in cellMemberList:
-                    if number in cell.getHypothesis():
-                        cell.setNumber(number)
-                        cell.setHypothesis([])
-                        coord = cell.getCoordinates()
-                        numberGrid[coord[0]][coord[1]] = number
-                        updateHypothesis(grid, numberGrid[coord[0]][coord[1]], coord[0], coord[1])
-
-
-def columnSolo(numberGrid, grid, j):
-    members = columnMembers(j)
-    cellMemberList = []
-    for member in members:
-        if numberGrid[member[0]][member[1]] == 0:
-            cellMemberList.append(grid.getCell(member))
-
-    if len(cellMemberList) != 0:
-        for number in range(1, 10):
-            count = 0
-            for cell in cellMemberList:
-                if len(cell.getHypothesis()) != 0:
-                    if number in cell.getHypothesis():
-                        count += 1
-            if count == 1:
-                for cell in cellMemberList:
-                    if number in cell.getHypothesis():
-                        cell.setNumber(number)
-                        cell.setHypothesis([])
-                        coord = cell.getCoordinates()
-                        numberGrid[coord[0]][coord[1]] = number
-                        updateHypothesis(grid, numberGrid[coord[0]][coord[1]], coord[0], coord[1])
-
-"""
-
-
 # Calls updateBoxes, Lines, Columns
 def updateAll(numberGrid, grid):
     updateBoxes(numberGrid, grid)
@@ -246,19 +198,22 @@ def checkSolo(memberList, numberGrid, grid):
 ##############################################################
 # Calls updateBoxTuple, LineTuple and ColumnTuple
 def updateTuples(numberGrid, grid):
+    print("checkBOXtuple : ")
     updateBoxTuple(numberGrid, grid)
+    print("checkLINEtuple : ")
     updateLineTuple(numberGrid, grid)
+    print("checkCOLUMNtuple : ")
     updateColumnTuple(numberGrid, grid)
 
 
 def updateBoxTuple(numberGrid, grid):
-    checkTuple(boxMembers(6, 3), numberGrid, grid)
-    checkTuple(boxMembers(6, 3), numberGrid, grid)
-    checkTuple(boxMembers(6, 3), numberGrid, grid)
-    checkTuple(boxMembers(6, 3), numberGrid, grid)
-    checkTuple(boxMembers(6, 3), numberGrid, grid)
-    checkTuple(boxMembers(6, 3), numberGrid, grid)
-    checkTuple(boxMembers(6, 3), numberGrid, grid)
+    checkTuple(boxMembers(0, 0), numberGrid, grid)
+    checkTuple(boxMembers(0, 3), numberGrid, grid)
+    checkTuple(boxMembers(0, 6), numberGrid, grid)
+    checkTuple(boxMembers(3, 0), numberGrid, grid)
+    checkTuple(boxMembers(3, 3), numberGrid, grid)
+    checkTuple(boxMembers(3, 6), numberGrid, grid)
+    checkTuple(boxMembers(6, 0), numberGrid, grid)
     checkTuple(boxMembers(6, 3), numberGrid, grid)
     checkTuple(boxMembers(6, 6), numberGrid, grid)
 
@@ -284,14 +239,21 @@ def checkTuple(memberList, numberGrid, grid):
     if len(indexList) == 0:
         return
 
+    print("indexList length:", len(indexList), "\n")
+
     # get cells with only 2 numbers as hypothesis
     if len(indexList) == 2:
         # 2 cells have hypothesis = 2
         cellx1 = grid.getCell(indexList[0])
         cellx2 = grid.getCell(indexList[1])
+        print("cellx1:")
+        cellx1.printCell()
+        print("cellx2:")
+        cellx2.printCell()
 
         if cellx1.getHypothesis() == cellx2.getHypothesis():  # if they have the same hypothesis
             hypothesisTuple = cellx1.getHypothesis()
+            print("hypothesisTuple", hypothesisTuple)
             for member in memberList:
                 if member not in indexList:
                     cell = grid.getCell(member)

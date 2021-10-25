@@ -76,7 +76,7 @@ class Grid:
                     return 0
                 if i != 9 and j != 9:
                     cellList.append(c)
-                    grid[i, j] = c.getNumber()
+                    grid[i][j] = c.getNumber()
         self.initLineList()
         self.initColumnList()
         return cellList
