@@ -22,12 +22,12 @@ def solving(grid, cellList):
             for j in range(len(numberGrid)):
                 cursor = (i, j)
                 if numberGrid[i][j] == 0:
-                    print(Grid.colors.YELLOW + "Working on: (", i, ",", j, ")")
+                    # print(Grid.colors.YELLOW + "Working on: (", i, ",", j, ")")
                     hypothesis = checking.getHypothesis(numberGrid, cursor)
                     currentCell = grid.getCell(cursor)
                     currentCell.setHypothesis(hypothesis)
                     numberGrid[i][j] = currentCell.placeNumber()
-                    print(Grid.colors.YELLOW + "final hypothesis:", currentCell.getHypothesis())
+                    # print(Grid.colors.YELLOW + "final hypothesis:", currentCell.getHypothesis())
         updateBoxes(numberGrid, grid)
         updateLines(numberGrid, grid)
         updateColumns(numberGrid, grid)
@@ -37,7 +37,6 @@ def solving(grid, cellList):
 
 def updateBoxes(numberGrid, grid):
     checking.boxSolo(numberGrid, grid, 0, 0)
-    """
     checking.boxSolo(numberGrid, grid, 0, 3)
     checking.boxSolo(numberGrid, grid, 0, 6)
     checking.boxSolo(numberGrid, grid, 3, 0)
@@ -46,16 +45,15 @@ def updateBoxes(numberGrid, grid):
     checking.boxSolo(numberGrid, grid, 6, 0)
     checking.boxSolo(numberGrid, grid, 6, 3)
     checking.boxSolo(numberGrid, grid, 6, 6)
-    """
 
 
 def updateLines(numberGrid, grid):
-    for i in range(10):
+    for i in range(9):
         checking.lineSolo(numberGrid, grid, i)
 
 
 def updateColumns(numberGrid, grid):
-    for j in range(10):
+    for j in range(9):
         checking.columnSolo(numberGrid, grid, j)
 
 

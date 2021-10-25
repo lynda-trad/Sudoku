@@ -12,14 +12,14 @@ def boxMembers(i, j):
 
 def lineMembers(i):
     list = []
-    for j in range(10):
+    for j in range(9):
         list.append((i, j))
     return list
 
 
 def columnMembers(j):
     list = []
-    for i in range(10):
+    for i in range(9):
         list.append((i, j))
     return list
 
