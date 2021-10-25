@@ -27,7 +27,9 @@ def solving(grid, cellList):
                     currentCell = grid.getCell(cursor)
                     currentCell.setHypothesis(hypothesis)
                     numberGrid[i][j] = currentCell.placeNumber()
+                    checking.updateHypothesis(grid, numberGrid[i][j], i, j)
                     # print(Grid.colors.YELLOW + "final hypothesis:", currentCell.getHypothesis())
+
         updateBoxes(numberGrid, grid)
         updateLines(numberGrid, grid)
         updateColumns(numberGrid, grid)

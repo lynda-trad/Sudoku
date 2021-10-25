@@ -6,7 +6,7 @@ import time
 def boxMembers(i, j):
     return [(i, j), (i + 1, j), (i + 2, j),
             (i, j + 1), (i + 1, j + 1), (i + 2, j + 1),
-            (i, j + 2), (i + 2, j + 2), (i + 2, j + 2)
+            (i, j + 2), (i + 1, j + 2), (i + 2, j + 2)
             ]
 
 
@@ -93,7 +93,6 @@ def checkBox(numberGrid, coordinates):
     checkingList.remove((i, j))
     checkingList.sort()
     hypothesis = []
-    print("checkbox, comparing to", checkingList)
     for number in range(1, 10):
         boolean = False  # not in box
         for cell in checkingList:
@@ -120,9 +119,34 @@ def getHypothesis(numberGrid, cursor):
     return hypothesis
 
 
-# Work on hypothesis
+# When a number is placed in main, function updates hypothesis of line and column members
+def updateHypothesis(grid, number, i, j):
+    iList = getIList(i)
+    jList = getJList(j)
+    boxList = mergeLists(iList, jList)
+    lineList = lineMembers(i)
+    columnList = columnMembers(j)
+
+    boxList.sort()
+    lineList.sort()
+    columnList.sort()
+
+    for coord in boxList:
+        cell = grid.getCell(coord)
+        cell.delHypothesis(number)
+
+    for coord in lineList:
+        cell = grid.getCell(coord)
+        cell.delHypothesis(number)
+
+    for coord in columnList:
+        cell = grid.getCell(coord)
+        cell.delHypothesis(number)
+
+
 def boxSolo(numberGrid, grid, i, j):
     members = boxMembers(i, j)
+
     cellMemberList = []
     for member in members:
         if numberGrid[member[0]][member[1]] == 0:
@@ -139,9 +163,9 @@ def boxSolo(numberGrid, grid, i, j):
                 for cell in cellMemberList:
                     if number in cell.getHypothesis():
                         cell.setNumber(number)
-                        cell.setHypothesis([])
                         coord = cell.getCoordinates()
                         numberGrid[coord[0]][coord[1]] = number
+                        updateHypothesis(grid, numberGrid[coord[0]][coord[1]], coord[0], coord[1])
 
 
 def lineSolo(numberGrid, grid, i):
@@ -165,6 +189,7 @@ def lineSolo(numberGrid, grid, i):
                         cell.setHypothesis([])
                         coord = cell.getCoordinates()
                         numberGrid[coord[0]][coord[1]] = number
+                        updateHypothesis(grid, numberGrid[coord[0]][coord[1]], coord[0], coord[1])
 
 
 def columnSolo(numberGrid, grid, j):
@@ -188,16 +213,16 @@ def columnSolo(numberGrid, grid, j):
                         cell.setHypothesis([])
                         coord = cell.getCoordinates()
                         numberGrid[coord[0]][coord[1]] = number
+                        updateHypothesis(grid, numberGrid[coord[0]][coord[1]], coord[0], coord[1])
 
 
 ##############################################################
 def boxTuple(numberGrid, grid, i, j):
     members = boxMembers(i, j)
-    # on check hypothesis de chaque cell on garde en memoire index de cell qui ont hypothesis = 2
     cellMemberList = []
     for member in members:
         if numberGrid[member[0]][member[1]] != 0:
-            cellMemberList.append(grid.getCell(members))  # on ajoute le membre de la boite qui a number = 0
+            cellMemberList.append(grid.getCell(members))
 
     # on recupere tt les cellules qui ont 2 numbers en hypothese
     hypothesisTuple = {}
@@ -222,7 +247,3 @@ def boxTuple(numberGrid, grid, i, j):
     if len(list(result)) == 2:
         return
 
-
-def updateBox(numberGrid, grid, i, j):
-    boxSolo(numberGrid, grid, i, j)
-    # boxTuple(numberGrid, grid, i, j)

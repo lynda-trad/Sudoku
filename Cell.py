@@ -36,7 +36,8 @@ class Cell:
 
     # Removes a number from hypothesis
     def delHypothesis(self, number):
-        self.hypothesis.remove(number)
+        if number in self.hypothesis:
+            self.hypothesis.remove(number)
 
     # Returns True if a number is in hypothesis, False if not
     def inHypothesis(self, number):
