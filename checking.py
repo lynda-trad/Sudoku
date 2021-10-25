@@ -1,6 +1,30 @@
 # Returns number possibilities of given cell depending of line
+import time
 
 
+# Return lists of coordinates on lines, columns or boxes
+def boxMembers(i, j):
+    return [(i, j), (i + 1, j), (i + 2, j),
+            (i, j + 1), (i + 1, j + 1), (i + 2, j + 1),
+            (i, j + 2), (i + 2, j + 2), (i + 2, j + 2)
+            ]
+
+
+def lineMembers(i):
+    list = []
+    for j in range(10):
+        list.append((i, j))
+    return list
+
+
+def columnMembers(j):
+    list = []
+    for i in range(10):
+        list.append((i, j))
+    return list
+
+
+# Returns number possibilities of given cell depending of line
 def checkLine(numberGrid, coordinates):
     i = coordinates[0]
     hypothesis = []
@@ -96,13 +120,79 @@ def getHypothesis(numberGrid, cursor):
     return hypothesis
 
 
-def updateBox(numberGrid, grid, i, j):
-    # box members
-    members = [(i, j), (i + 1, j), (i + 2, j),
-               (i, j + 1), (i + 1, j + 1), (i + 2, j + 1),
-               (i, j + 2), (i + 2, j + 2), (i + 2, j + 2)
-               ]
+# Work on hypothesis
+def boxSolo(numberGrid, grid, i, j):
+    members = boxMembers(i, j)
+    cellMemberList = []
+    for member in members:
+        if numberGrid[member[0]][member[1]] == 0:
+            cellMemberList.append(grid.getCell(member))
 
+    if len(cellMemberList) != 0:
+        for number in range(1, 10):
+            count = 0
+            for cell in cellMemberList:
+                if len(cell.getHypothesis()) != 0:
+                    if number in cell.getHypothesis():
+                        count += 1
+            if count == 1:
+                for cell in cellMemberList:
+                    if number in cell.getHypothesis():
+                        cell.setNumber(number)
+                        cell.setHypothesis([])
+                        coord = cell.getCoordinates()
+                        numberGrid[coord[0]][coord[1]] = number
+
+
+def lineSolo(numberGrid, grid, i):
+    members = lineMembers(i)
+    cellMemberList = []
+    for member in members:
+        if numberGrid[member[0]][member[1]] == 0:
+            cellMemberList.append(grid.getCell(member))
+
+    if len(cellMemberList) != 0:
+        for number in range(1, 10):
+            count = 0
+            for cell in cellMemberList:
+                if len(cell.getHypothesis()) != 0:
+                    if number in cell.getHypothesis():
+                        count += 1
+            if count == 1:
+                for cell in cellMemberList:
+                    if number in cell.getHypothesis():
+                        cell.setNumber(number)
+                        cell.setHypothesis([])
+                        coord = cell.getCoordinates()
+                        numberGrid[coord[0]][coord[1]] = number
+
+
+def columnSolo(numberGrid, grid, j):
+    members = columnMembers(j)
+    cellMemberList = []
+    for member in members:
+        if numberGrid[member[0]][member[1]] == 0:
+            cellMemberList.append(grid.getCell(member))
+
+    if len(cellMemberList) != 0:
+        for number in range(1, 10):
+            count = 0
+            for cell in cellMemberList:
+                if len(cell.getHypothesis()) != 0:
+                    if number in cell.getHypothesis():
+                        count += 1
+            if count == 1:
+                for cell in cellMemberList:
+                    if number in cell.getHypothesis():
+                        cell.setNumber(number)
+                        cell.setHypothesis([])
+                        coord = cell.getCoordinates()
+                        numberGrid[coord[0]][coord[1]] = number
+
+
+##############################################################
+def boxTuple(numberGrid, grid, i, j):
+    members = boxMembers(i, j)
     # on check hypothesis de chaque cell on garde en memoire index de cell qui ont hypothesis = 2
     cellMemberList = []
     for member in members:
@@ -131,3 +221,8 @@ def updateBox(numberGrid, grid, i, j):
     # result == list des coordonnees des 2 cells qui ont hypotheses en commun
     if len(list(result)) == 2:
         return
+
+
+def updateBox(numberGrid, grid, i, j):
+    boxSolo(numberGrid, grid, i, j)
+    # boxTuple(numberGrid, grid, i, j)
