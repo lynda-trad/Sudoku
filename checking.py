@@ -230,34 +230,26 @@ def updateColumnTuple(numberGrid, grid):
 
 # If 2 cells in a line, column or box have the same numbers as hypothesis then we remove them from the other hypothesis
 def checkTuple(memberList, numberGrid, grid):
+    print("\nCHECKTUPLE")
     indexList = []
     for member in memberList:
         if numberGrid[member[0]][member[1]] == 0:
             cell = grid.getCell(member)
             if len(cell.getHypothesis()) == 2:
                 indexList.append(member)
+                cell.printCell()
     if len(indexList) == 0:
         return
-
     print("indexList length:", len(indexList), "\n")
 
-    # get cells with only 2 numbers as hypothesis
-    if len(indexList) == 2:
-        # 2 cells have hypothesis = 2
-        cellx1 = grid.getCell(indexList[0])
-        cellx2 = grid.getCell(indexList[1])
-        print("cellx1:")
-        cellx1.printCell()
-        print("cellx2:")
-        cellx2.printCell()
+    hypothesisDic = {}
+    for id in indexList:
+        cell = grid.getCell(id)
+        hypo = cell.getHypothesis()
+        if str(hypo) not in hypothesisDic:
+            hypothesisDic[str(hypo)] = []
+            hypothesisDic[str(hypo)].append(id)
+        else:
+            hypothesisDic[str(hypo)].append(id)
 
-        if cellx1.getHypothesis() == cellx2.getHypothesis():  # if they have the same hypothesis
-            hypothesisTuple = cellx1.getHypothesis()
-            print("hypothesisTuple", hypothesisTuple)
-            for member in memberList:
-                if member not in indexList:
-                    cell = grid.getCell(member)
-                    if hypothesisTuple[0] in cell.getHypothesis():
-                        cell.delHypothesis(hypothesisTuple[0])
-                    if hypothesisTuple[1] in cell.getHypothesis():
-                        cell.delHypothesis(hypothesisTuple[1])
+    print("hypothesisDic[0]: ", list(hypothesisDic.values())[0])
