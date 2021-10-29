@@ -64,6 +64,16 @@ class Grid:
     def gridInit(self):
         grid = self.getNumberGrid()
         lines = openFile()
+        # checking file is correctly written
+        if len(lines) != 9:
+            return 0
+        char = 0
+        for line in lines:
+            for c in line:
+                char += 1
+        if char != 89:
+            return 0
+        
         cellList = []
         for i in range(len(lines)):
             for j in range(len(lines[i])):

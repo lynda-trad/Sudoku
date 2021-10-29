@@ -253,3 +253,15 @@ def checkTuple(memberList, numberGrid, grid):
             hypothesisDic[str(hypo)].append(id)
 
     print("hypothesisDic[0]: ", list(hypothesisDic.values())[0])
+    """
+    for hypoTuple in hypothesisDic:
+        if len(list(hypoTuple.values())) == 2:  # if 2 coordinates have the same tuple hypothesis
+            for member in memberList:
+                if list(hypothesisDic.values())[0] != member:
+                    tuple = str(list(hypothesisDic.values())[0])
+                    numberx0 = tuple[2]
+                    numberx1 = tuple[5]
+                    cell = grid.getCell(member)
+                    cell.delHypothesis(numberx0)
+                    cell.delHypothesis(numberx1)
+    """
